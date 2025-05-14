@@ -7,8 +7,20 @@ import pandas as pd
 Session = sessionmaker(bind = engine)
 session = Session()
 
+#Leer el archivo csv
 
-df = pd.read_csv("./data/saludos_mundo.csv")
-print("Archivo leido correctamente")
+df = pd.read_csv("./data/saludos_mundo.csv", sep='|')
 
-print(type(df))
+# Insertar cada fila como un objeto Saludo2
+
+for _, fila in df.iterrows():
+    saludo = Saludo2(
+        mensaje=fila['mensaje'],
+        tipo=fila['tipo'],
+        origen=fila['origen']
+    )
+    session.add(saludo)
+
+session.commit()
+
+print("Datos insertados correctamente.")
